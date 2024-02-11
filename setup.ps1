@@ -3,7 +3,7 @@
 $centralProfilePath = '$HOME\Documents\PsProfileConfig.ps1'
 
 # Install modules
-winget install JanDeDobbeleer.OhMyPosh -Scope CurrentUser
+winget install JanDeDobbeleer.OhMyPosh
 install-module poshgit
 
 # Copy profile script to 'central' user location
