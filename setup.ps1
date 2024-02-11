@@ -4,7 +4,7 @@ $centralProfilePath = '$HOME\Documents\PsProfileConfig.ps1'
 
 # Install modules
 winget install JanDeDobbeleer.OhMyPosh
-install-module poshgit
+install-module posh-git
 
 # Copy profile script to 'central' user location
 copy-item PsProfileConfig.ps1 $centralProfilePath
