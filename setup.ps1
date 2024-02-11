@@ -2,7 +2,11 @@
 
 # Install modules
 winget install JanDeDobbeleer.OhMyPosh
-install-module posh-git
+
+Set-PSRepository PSGallery -InstallationPolicy Trusted
+Install-module -Name posh-git
+Install-Module -Name Terminal-Icons -Repository PSGallery
+Install-Module -Name PSReadLine
 
 # Copy profile script to 'central' user location
 copy-item PsProfileConfig.ps1 "$HOME\Documents\PsProfileConfig.ps1"
