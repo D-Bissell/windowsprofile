@@ -1,5 +1,5 @@
 # Powershell profile configuration.
-# Download this script to $HOME\Documents\windowsprofile\PsProfileConfig.ps1
+# Download this script to $HOME\Documents\PsProfileConfig.ps1
 
 # Dot source this script from profile script $PROFILE.CurrentUserAllHosts for powershell 7 and 5
 
