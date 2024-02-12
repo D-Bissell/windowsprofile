@@ -8,7 +8,7 @@
 
 # Add post-git
 Import-Module posh-git
-import-Module Terminal-Icons
+Import-Module Terminal-Icons
 
 
 # Add oh-my-posh and set the theme
