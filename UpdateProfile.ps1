@@ -12,6 +12,9 @@ copy-item PsProfileConfig.ps1 "$HOME\Documents\PsProfileConfig.ps1"
 Write-Host "Creating redirecting profile scripts"
 Set-Content $PROFILE.CurrentUserAllHosts ". $HOME\Documents\PsProfileConfig.ps1"
 
+# Copy custom themes from repo to oh my posh path
+Copy-Item -path CustomThemes -Destination "$env:POSH_THEMES_PATH" -Recurse -Force
+
 # then re-run profile .$PROFILE
 Write-Host "Running profile script"
 . $PROFILE.CurrentUserAllHosts

@@ -29,7 +29,6 @@ Get-ChildItem -Path ".\$FontName" -Include '*.ttf' -Recurse | ForEach-Object -Pr
     $Fonts.CopyHere($_.FullName)
 }
 
-
 # Delete temp font files
 Write-Host "Removing Temp font files"
 Remove-item -Path "$FontName*" -Confirm:$false -Recurse

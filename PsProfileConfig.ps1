@@ -12,14 +12,12 @@ Import-Module Terminal-Icons
 
 
 # Add oh-my-posh and set the theme
-oh-my-posh init pwsh | Invoke-Expressionclear
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/marcduiker.omp.json" | Invoke-Expression
-$env:POSH_GIT_ENABLED = $true
-
-
+oh-my-posh init pwsh | Invoke-Expression
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/CustomThemes/marcduiker-custom.omp.json" | Invoke-Expression
 
 #Cloud native azure good but too much stuff
-# Gruvbox
+# Gruvbox - meh
+# Marcduiker - good starting point
 
 #I want
 # path
