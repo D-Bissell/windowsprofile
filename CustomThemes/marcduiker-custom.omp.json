@@ -5,12 +5,12 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#feae34",
+          "background": "#0095e9",
           "foreground": "#262b44",
           "leading_diamond": "\ue0b6",
           "powerline_symbol": "\ue0b0",
           "properties": {
-            "style": "folder"
+            "style": "agnoster_full"
           },
           "style": "diamond",
           "template": " \ue5ff {{ .Path }} ",
