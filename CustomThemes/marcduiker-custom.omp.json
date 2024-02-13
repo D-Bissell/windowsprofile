@@ -44,13 +44,12 @@
           "background": "#FFDE57",
           "foreground": "#161b30",
           "properties": {
-            "display_mode": "files",
-            "fetch_virtual_env": false
+            "display_mode": "context"
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
           "trailing_diamond": "\ue0b0",
-          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
+          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }} {{ .Venv }}{{ end }} "
         },
         {
           "type": "status",
