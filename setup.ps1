@@ -1,14 +1,22 @@
 # Run this script to setup windows profile
 
 # Install modules
+Write-Host "Installing oh-my-posh"
 winget install JanDeDobbeleer.OhMyPosh
 
 Set-PSRepository PSGallery -InstallationPolicy Trusted
-Install-module -Name posh-git
-Install-Module -Name Terminal-Icons -Repository PSGallery
-Install-Module -Name PSReadLine
+
+Write-Host "Installing posh-git"
+Install-module -Name posh-git -Scope CurrentUser
+
+Write-Host "Installing Terminal-Icons"
+Install-Module -Name Terminal-Icons -Repository PSGallery -Scope CurrentUser
+
+Write-Host "Installing PSReadLine"
+Install-Module -Name PSReadLine -Scope CurrentUser
 
 # Install Nerd font
+Write-Host "Installing Nerd Font (Ignore the 302 error)"
 $FontName = 'CascadiaCode'
 $NerdFontsURI = 'https://github.com/ryanoasis/nerd-fonts/releases'
 Invoke-WebRequest -Uri "$NerdFontsURI/latest" -MaximumRedirection 0 -ErrorVariable err
@@ -21,14 +29,9 @@ Get-ChildItem -Path ".\$FontName" -Include '*.ttf' -Recurse | ForEach-Object -Pr
     $Fonts.CopyHere($_.FullName)
 }
 
-# Copy profile script to 'central' user location
-copy-item PsProfileConfig.ps1 "$HOME\Documents\PsProfileConfig.ps1"
 
+# Delete temp font files
+Write-Host "Removing Temp font files"
+Remove-item -Path "$FontName*" -Confirm:$false -Recurse
 
-# Add redirect to the system profile script
-# This may need to be done for both powershell 5 and powershell 7+
-Set-Content $PROFILE.CurrentUserAllHosts ". $HOME\Documents\PsProfileConfig.ps1"
-
-# then re-run profile .$PROFILE
-
-
+. .\UpdateProfile.ps1
