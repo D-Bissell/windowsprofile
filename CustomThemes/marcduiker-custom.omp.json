@@ -23,7 +23,7 @@
             "{{ if or (.Working.Changed) (.Staging.Changed) }}#f77622{{ end }}",
             "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#e43b44{{ end }}",
             "{{ if gt .Ahead 0 }}#2ce8f5{{ end }}",
-            "{{ if gt .Behind 0 }}#f77622{{ end }}"
+            "{{ if gt .Behind 0 }}#ffee00{{ end }}"
           ],
           "foreground": "#262b44",
           "powerline_symbol": "\ue0b0",
