@@ -5,8 +5,8 @@
       "alignment": "left",
       "segments": [
         {
-          "background": "#0095e9",
-          "foreground": "#262b44",
+          "background": "#00a2ed",
+          "foreground": "#16301a",
           "leading_diamond": "\ue0b6",
           "powerline_symbol": "\ue0b0",
           "properties": {
@@ -25,7 +25,7 @@
             "{{ if gt .Ahead 0 }}#2ce8f5{{ end }}",
             "{{ if gt .Behind 0 }}#ffee00{{ end }}"
           ],
-          "foreground": "#262b44",
+          "foreground": "#161b30",
           "powerline_symbol": "\ue0b0",
           "properties": {
             "fetch_stash_count": true,
@@ -37,17 +37,29 @@
           "type": "git"
         },
         {
-          "background": "#0095e9",
+          "background": "#FFDE57",
+          "foreground": "#161b30",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "display_mode": "files",
+            "fetch_virtual_env": false
+          },
+          "style": "powerline",
+          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
+          "type": "python"
+        },        
+        {
+          "background": "#00a2ed",
           "background_templates": [
             "{{ if gt .Code 0 }}#ff0044{{ end }}"
           ],
-          "foreground": "#ffffff",
+          "foreground": "#161b30",
           "leading_diamond": "<transparent,background>\ue0b0</>",
           "properties": {
             "always_enabled": true
           },
           "style": "diamond",
-          "template": " \uf0e7 ",
+          "template": "{{ if gt .Code 0 }} {{ .Code }} \uf12a{{ else }} \uf0e7 {{ end }}",
           "trailing_diamond": "\ue0b4",
           "type": "status"
         }
