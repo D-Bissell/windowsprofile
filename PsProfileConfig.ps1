@@ -12,7 +12,7 @@ Import-Module Terminal-Icons
 
 
 # Add oh-my-posh and set the theme
-oh-my-posh init pwsh | Invoke-Expression
+oh-my-posh init pwsh | Invoke-Expressionclear
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/marcduiker.omp.json" | Invoke-Expression
 $env:POSH_GIT_ENABLED = $true
 
