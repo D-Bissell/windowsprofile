@@ -9,13 +9,12 @@
           "type": "path",
           "background": "#00a2ed",
           "foreground": "#161b30",
-          "leading_diamond": "\ue0b6",
-          "powerline_symbol": "\ue0b0",
           "properties": {
-            "style": "agnoster_full"
+            "style": "agnoster_short"
           },
           "style": "diamond",
           "template": " \ue5ff {{ .Path }} ",
+          "leading_diamond": "\ue0b6",
           "trailing_diamond": "\ue0b0"
         },
         {
@@ -28,7 +27,6 @@
             "{{ if gt .Behind 0 }}#ffee00{{ end }}"
           ],
           "foreground": "#161b30",
-          "powerline_symbol": "\ue0b0",
           "properties": {
             "fetch_stash_count": true,
             "fetch_status": true,
@@ -64,7 +62,7 @@
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
           "trailing_diamond": "\ue0b0",
-          "template": "{{ if gt .Code 0 }} \ue009{{ reason .Code }}{{ end }}{{ if .Root }} <#FFDE57>\uf0e7</> {{ else }} \ue691 {{ end }}"
+          "template": "{{ if gt .Code 0 }} \ue009{{ reason .Code }}{{ end }}{{ if .Root }}<#FFDE57> \uf0e7</>{{ else }} \ue691{{ end }} "
         }
       ]
     },
@@ -76,8 +74,8 @@
           "type": "az",
           "background": "#0077c2",
           "foreground": "#ffffff",
-          "style": "plain",
-          "template": "<#0077c2,transparent>\ue0b6</> \uf489 {{ .Name }} <transparent,#0077c2>\ue0b2</>"
+          "style": "accordion",
+          "template": "<background,transparent>\ue0b6</> \uebd8 {{ if gt (len .Name) 99 }}{{ .Name | substr 0 10 }}...{{ .Name | substr (sub (len .Name) 5) 5 }}{{ else }}{{ .Name }}{{ end }} <transparent,background>\ue0b2</>"
         },
         {
           "type": "time",
