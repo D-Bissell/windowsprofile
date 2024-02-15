@@ -76,16 +76,6 @@
           "foreground": "#ffffff",
           "style": "accordion",
           "template": "<background,transparent>\ue0b6</> \uebd8 {{ if gt (len .Name) 99 }}{{ .Name | substr 0 10 }}...{{ .Name | substr (sub (len .Name) 5) 5 }}{{ else }}{{ .Name }}{{ end }} <transparent,background>\ue0b2</>"
-        },
-        {
-          "type": "time",
-          "background": "#2e9599",
-          "foreground": "#111111",
-          "invert_powerline": true,
-          "leading_diamond": "\ue0b2",
-          "style": "diamond",
-          "template": " \ue641 {{ .CurrentDate | date .Format }} ",
-          "trailing_diamond": "\ue0b4"
         }
       ]
     }
