@@ -42,7 +42,7 @@
           "background": "#6CA35E",
           "foreground": "#161b30",
           "properties": {
-            "fetch_version": true            
+            "fetch_version": true
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
@@ -54,25 +54,25 @@
           "background": "#8ED1F7",
           "foreground": "#161b30",
           "properties": {
-            "fetch_version": true            
+            "fetch_version": true
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
           "trailing_diamond": "\ue0b0",
           "template": " \ue626 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
-        },                
+        },
         {
           "type": "julia",
           "background": "#4063D8",
           "foreground": "#161b30",
           "properties": {
-            "fetch_version": true            
+            "fetch_version": true
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
           "trailing_diamond": "\ue0b0",
           "template": " \ue624 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} "
-        },        
+        },
         {
           "type": "python",
           "background": "#FFDE57",
@@ -91,7 +91,7 @@
           "foreground": "#161b30",
           "properties": {
             "display_mode": "files",
-            "fetch_version": true            
+            "fetch_version": true
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
@@ -104,7 +104,7 @@
           "foreground": "#161b30",
           "properties": {
             "display_mode": "files",
-            "fetch_version": false            
+            "fetch_version": false
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
@@ -124,7 +124,7 @@
           "leading_diamond": "<transparent,background>\ue0b0</>",
           "trailing_diamond": "\ue0b0",
           "template": ""
-        },                 
+        },
         {
           "type": "status",
           "background": "#00a2ed",
@@ -137,7 +137,7 @@
           },
           "style": "diamond",
           "leading_diamond": "<transparent,background>\ue0b0</>",
-          "trailing_diamond": "\ue0b0",
+          "trailing_diamond": "\ue0b4",
           "template": "{{ if gt .Code 0 }} \ue009{{ reason .Code }}{{ end }}{{ if .Root }}<#FFDE57> \uf0e7</>{{ else }} \ue691{{ end }} "
         }
       ]
@@ -150,8 +150,25 @@
           "type": "az",
           "background": "#0077c2",
           "foreground": "#ffffff",
-          "style": "accordion",
-          "template": "<background,transparent>\ue0b6</> \uebd8 {{ if gt (len .Name) 99 }}{{ .Name | substr 0 10 }}...{{ .Name | substr (sub (len .Name) 5) 5 }}{{ else }}{{ .Name }}{{ end }} <transparent,background>\ue0b2</>"
+          "properties": {
+            "source": "cli"
+          },
+          "style": "diamond",
+          "leading_diamond": "<background,transparent>\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "\uebd8 {{ if gt (len .Name) 30 }}{{ .Name | substr 0 10 }}...{{ .Name | substr (sub (len .Name) 5) 5 }}{{ else }}{{ .Name }}{{ end }}</>"
+        },
+        {
+          "type": "az",
+          "background": "#0077c2",
+          "foreground": "#ffffff",
+          "properties": {
+            "source": "pwsh"
+          },
+          "style": "diamond",
+          "leading_diamond": "<background,transparent>\ue0b6",
+          "trailing_diamond": "\ue0b4",
+          "template": "\uebd8 {{ if gt (len .Name) 30 }}{{ .Name | substr 0 10 }}...{{ .Name | substr (sub (len .Name) 5) 5 }}{{ else }}{{ .Name }}{{ end }}</>"
         }
       ]
     }
