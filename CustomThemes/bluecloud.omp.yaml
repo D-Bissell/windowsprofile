@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
 blocks:
   - type: prompt
     alignment: left
@@ -39,8 +40,7 @@ blocks:
           fetch_version: true
         style: powerline
         powerline_symbol: <parentBackground,background></>
-        template: "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{
-          .Full }} "
+        template: "  {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} "
 
       - type: go
         background: "#8ED1F7"
@@ -63,11 +63,9 @@ blocks:
       - type: python
         background: "#FFDE57"
         foreground: "#161b30"
-        properties:
         style: powerline
         powerline_symbol: <parentBackground,background></>
-        template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }} {{ .Venv }}{{ end
-          }} "
+        template: "  {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }} {{ .Venv }}{{ end }} "
 
       - type: ruby
         background: "#AE1401"
