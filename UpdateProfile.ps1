@@ -1,9 +1,8 @@
-# This script copies the profile script from the repository to the users $HOME\Documents folder.
+# This dodgy script copies the profile script from the repository to the users $HOME\Documents folder.
 # It then points the $Profile.CurrentUserAllHosts to the profile script in $HOME\Documents
 # 
 
-
-# Copy profile script to 'central' user location
+# Copy profile script to a 'central' user location
 Write-Host "Copying profile script from repo to $HOME"
 copy-item PsProfileConfig.ps1 "$HOME\Documents\PsProfileConfig.ps1"
 
@@ -12,10 +11,10 @@ copy-item PsProfileConfig.ps1 "$HOME\Documents\PsProfileConfig.ps1"
 Write-Host "Creating redirecting profile scripts"
 Set-Content $PROFILE.CurrentUserAllHosts ". $HOME\Documents\PsProfileConfig.ps1"
 
-# Copy custom themes from repo to oh my posh path
+# Copy custom themes from repo to oh-my-posh themes path
 Copy-Item -path CustomThemes -Destination "$env:POSH_THEMES_PATH" -Recurse -Force
 
-# then re-run profile .$PROFILE
+# Then re-run profile script.
 Write-Host "Running profile script"
 . $PROFILE.CurrentUserAllHosts
 
