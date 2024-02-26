@@ -1,20 +1,69 @@
-# Powershell profile configuration.
-# Download this script to $HOME\Documents\PsProfileConfig.ps1
+<#
+.SYNOPSIS
+    This script configures the PowerShell profile with shell enhancements
 
-# Dot source this script from profile script $PROFILE.CurrentUserAllHosts for powershell 7 and 5
-## . $HOME\Documents\PsProfileConfig.ps1
+.DESCRIPTION
+    This is a powershell profile script. It imports and runs
+    - Terminal-Icons
+    - Oh-My-Posh
+    - Posh-git
+    
+.EXAMPLE
+    . $HOME\Documents\PsProfileConfig.ps1
+    This example shows how to source this script from your PowerShell profile.
 
-# Add posh-git
-Import-Module posh-git
-Import-Module Terminal-Icons
+.NOTES
+    This script should be placed in $HOME\Documents and dot sourced from the PowerShell profile script.
+#>
 
 
-# Add oh-my-posh and set the theme
-oh-my-posh init pwsh | Invoke-Expression
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/CustomThemes/bluecloud.omp.yaml" | Invoke-Expression
-$env:POSH_GIT_ENABLED = $false
+$ThemeName = "bluecloud"
 
-# Enable PowerShell support for Az module
-# https://ohmyposh.dev/docs/segments/az
-$env:POSH_AZURE_ENABLED = $true
+function Import-ModuleWithCheck {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$ModuleName
+    )
+
+    try {
+        if (Get-Module -ListAvailable -Name $ModuleName) {
+            Import-Module $ModuleName
+            Write-Host "Module '$ModuleName' imported successfully."
+        } else {
+            Write-Error "Module '$ModuleName' not found. Please install it first."
+        }
+    } catch {
+        Write-Error "An error occurred while importing module '$ModuleName': $_"
+    }
+}
+
+function Initialize-OhMyPosh {
+    try {
+        oh-my-posh init pwsh | Invoke-Expression
+        $ThemePath = "$env:POSH_THEMES_PATH\CustomThemes\$ThemeName.omp.yaml"
+        if (Test-Path $ThemePath) {
+            oh-my-posh init pwsh --config $ThemePath | Invoke-Expression
+            Write-Host "Oh-My-Posh initialized with custom theme $ThemePath."
+        } else {
+            Write-Error "Oh-My-Posh theme not found at '$ThemePath'"
+        }
+    } catch {
+        Write-Error "An error occurred while initializing Oh-My-Posh: $_"
+    }
+}
+
+# Main script execution
+try {
+    Import-ModuleWithCheck -ModuleName "posh-git"
+    Import-ModuleWithCheck -ModuleName "Terminal-Icons"
+
+    Initialize-OhMyPosh
+
+    $env:POSH_GIT_ENABLED = $false
+    $env:POSH_AZURE_ENABLED = $true
+    Write-Host "PowerShell profile configuration completed."
+} catch {
+    Write-Error "An error occurred during PowerShell profile configuration: $_"
+}
 
