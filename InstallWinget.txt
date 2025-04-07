@@ -2,3 +2,7 @@ Installing winget can be an absolute pain.
 
 There are a couple of methods at this link. I had to use the 2nd one once.
 https://github.com/asheroto/winget-install?tab=readme-ov-file
+
+Run these in admin mode:
+Install-Script winget-install -Force
+winget-install
