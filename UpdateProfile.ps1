@@ -9,7 +9,7 @@ copy-item PsProfileConfig.ps1 "$HOME\Documents\PsProfileConfig.ps1"
 # Add redirect to the system profile script
 # This may need to be done for both powershell 5 and powershell 7+
 Write-Host "Creating redirecting profile scripts"
-Set-Content $PROFILE.CurrentUserAllHosts ". $HOME\Documents\PsProfileConfig.ps1"
+Set-Content $PROFILE.CurrentUserAllHosts ". `"$HOME\Documents\PsProfileConfig.ps1`""
 
 # Copy custom themes from repo to oh-my-posh themes path
 Copy-Item -path CustomThemes -Destination "$env:POSH_THEMES_PATH" -Recurse -Force
