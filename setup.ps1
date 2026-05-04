@@ -33,4 +33,4 @@ Get-ChildItem -Path ".\$FontName" -Include '*.ttf' -Recurse | ForEach-Object -Pr
 Write-Host "Removing Temp font files"
 Remove-item -Path "$FontName*" -Confirm:$false -Recurse
 
-. .\UpdateProfile.ps1
+. "$PSScriptRoot\UpdateProfile.ps1"
