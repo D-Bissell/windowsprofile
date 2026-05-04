@@ -12,7 +12,11 @@ Write-Host "Creating redirecting profile scripts"
 Set-Content $PROFILE.CurrentUserAllHosts ". $HOME\Documents\PsProfileConfig.ps1"
 
 # Copy custom themes from repo to oh-my-posh themes path
-Copy-Item -Path "$PSScriptRoot\CustomThemes" -Destination "$env:POSH_THEMES_PATH" -Recurse -Force
+if (-not $env:POSH_THEMES_PATH) {
+    Write-Error "POSH_THEMES_PATH is not set — is oh-my-posh installed?"
+} else {
+    Copy-Item -Path "$PSScriptRoot\CustomThemes" -Destination "$env:POSH_THEMES_PATH" -Recurse -Force
+}
 
 # Then re-run profile script.
 Write-Host "Running profile script"

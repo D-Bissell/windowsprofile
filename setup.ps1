@@ -1,28 +1,29 @@
+#Requires -RunAsAdministrator
 # Run this script to setup windows profile
 
 # Install modules
 Write-Host "Installing oh-my-posh"
 winget install JanDeDobbeleer.OhMyPosh
 
-Set-PSRepository PSGallery -InstallationPolicy Trusted
+Set-PSResourceRepository -Name PSGallery -Trusted
 
 Write-Host "Installing posh-git"
-Install-module -Name posh-git -Scope CurrentUser
+Install-PSResource -Name posh-git -Scope AllUsers
 
 Write-Host "Installing Terminal-Icons"
-Install-Module -Name Terminal-Icons -Repository PSGallery -Scope CurrentUser
+Install-PSResource -Name Terminal-Icons -Scope AllUsers -Reinstall
 
 Write-Host "Installing PSReadLine"
-Install-Module -Name PSReadLine -Scope CurrentUser
+Install-PSResource -Name PSReadLine -Scope AllUsers
 
 # Install Nerd font
-Write-Host "Installing Nerd Font"
 $FontName = 'CascadiaCode'
 $NerdFontsURI = 'https://github.com/ryanoasis/nerd-fonts/releases'
+
 try {
     Write-Host "Resolving latest Nerd Fonts release version"
     $response = Invoke-WebRequest -Uri "$NerdFontsURI/latest" -MaximumRedirection 10
-    $LatestVersion = Split-Path -Path $response.BaseResponse.ResponseUri -Leaf
+    $LatestVersion = Split-Path -Path $response.BaseResponse.RequestMessage.RequestUri -Leaf
 
     Write-Host "Downloading $FontName $LatestVersion"
     Invoke-WebRequest -Uri "$NerdFontsURI/download/$LatestVersion/$FontName.zip" -OutFile "$PSScriptRoot\$FontName.zip"
@@ -31,12 +32,20 @@ try {
     Expand-Archive -Path "$PSScriptRoot\$FontName.zip" -DestinationPath "$PSScriptRoot\$FontName"
 
     Write-Host "Installing fonts"
-    $ShellApplication = New-Object -ComObject shell.application
-    $Fonts = $ShellApplication.NameSpace(0x14)
+    $fontsDir = "$env:WINDIR\Fonts"
+    $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+    $installed = 0
+    $skipped = 0
     Get-ChildItem -Path "$PSScriptRoot\$FontName" -Include '*.ttf' -Recurse | ForEach-Object {
-        $Fonts.CopyHere($_.FullName)
+        if (Test-Path "$fontsDir\$($_.Name)") {
+            $skipped++
+        } else {
+            Copy-Item $_.FullName "$fontsDir\$($_.Name)" -Force
+            New-ItemProperty -Path $regPath -Name "$($_.BaseName) (TrueType)" -Value $_.Name -PropertyType String -Force | Out-Null
+            $installed++
+        }
     }
-    Write-Host "Nerd Font installed successfully."
+    Write-Host "Nerd Font installation complete ($installed installed, $skipped already present)."
 } catch {
     Write-Error "Font installation failed: $_"
 } finally {
