@@ -16,21 +16,32 @@ Write-Host "Installing PSReadLine"
 Install-Module -Name PSReadLine -Scope CurrentUser
 
 # Install Nerd font
-Write-Host "Installing Nerd Font (Ignore the 302 error)"
+Write-Host "Installing Nerd Font"
 $FontName = 'CascadiaCode'
 $NerdFontsURI = 'https://github.com/ryanoasis/nerd-fonts/releases'
-Invoke-WebRequest -Uri "$NerdFontsURI/latest" -MaximumRedirection 0 -ErrorVariable err
-$LatestVersion = Split-Path -Path $err.InnerException.Response.Headers.Location -Leaf
-Invoke-WebRequest -Uri "$NerdFontsURI/download/$LatestVersion/$FontName.zip" -OutFile "$FontName.zip"
-Expand-Archive -Path "$FontName.zip"
-$ShellApplication = New-Object -ComObject shell.application
-$Fonts = $ShellApplication.NameSpace(0x14)
-Get-ChildItem -Path ".\$FontName" -Include '*.ttf' -Recurse | ForEach-Object -Process {
-    $Fonts.CopyHere($_.FullName)
-}
+try {
+    Write-Host "Resolving latest Nerd Fonts release version"
+    $response = Invoke-WebRequest -Uri "$NerdFontsURI/latest" -MaximumRedirection 10
+    $LatestVersion = Split-Path -Path $response.BaseResponse.ResponseUri -Leaf
 
-# Delete temp font files
-Write-Host "Removing Temp font files"
-Remove-item -Path "$FontName*" -Confirm:$false -Recurse
+    Write-Host "Downloading $FontName $LatestVersion"
+    Invoke-WebRequest -Uri "$NerdFontsURI/download/$LatestVersion/$FontName.zip" -OutFile "$PSScriptRoot\$FontName.zip"
+
+    Write-Host "Extracting font archive"
+    Expand-Archive -Path "$PSScriptRoot\$FontName.zip" -DestinationPath "$PSScriptRoot\$FontName"
+
+    Write-Host "Installing fonts"
+    $ShellApplication = New-Object -ComObject shell.application
+    $Fonts = $ShellApplication.NameSpace(0x14)
+    Get-ChildItem -Path "$PSScriptRoot\$FontName" -Include '*.ttf' -Recurse | ForEach-Object {
+        $Fonts.CopyHere($_.FullName)
+    }
+    Write-Host "Nerd Font installed successfully."
+} catch {
+    Write-Error "Font installation failed: $_"
+} finally {
+    Write-Host "Removing temp font files"
+    Remove-Item -Path "$PSScriptRoot\$FontName*" -Confirm:$false -Recurse -ErrorAction SilentlyContinue
+}
 
 . "$PSScriptRoot\UpdateProfile.ps1"
