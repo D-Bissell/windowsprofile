@@ -105,7 +105,7 @@ blocks:
         properties:
           always_enabled: true
         style: diamond
-        trailing_diamond: 
+        trailing_diamond: 
         template: "{{ if gt .Code 0 }} {{ reason .Code }}{{ end }}{{ if .Root
           }}<#FFDE57> </>{{ else }} {{ end }} "
 
