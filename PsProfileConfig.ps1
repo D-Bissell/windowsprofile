@@ -7,7 +7,7 @@
     - Terminal-Icons
     - Oh-My-Posh
     - Posh-git
-    
+
 .EXAMPLE
     . $HOME\Documents\PsProfileConfig.ps1
     This example shows how to source this script from your PowerShell profile.
@@ -39,6 +39,7 @@ function Import-ModuleWithCheck {
 
 function Initialize-OhMyPosh {
     try {
+        $env:POSH_THEMES_PATH = resolve-path "~\AppData\Local\Programs\oh-my-posh\themes" # Kludge to fix User path with an opening bracket but no close bracket
         $ThemePath = "$env:POSH_THEMES_PATH\CustomThemes\$ThemeName.omp.yaml"
         if (Test-Path $ThemePath) {
             oh-my-posh init pwsh --config $ThemePath | Invoke-Expression

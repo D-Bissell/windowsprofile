@@ -1,6 +1,6 @@
 # This dodgy script copies the profile script from the repository to the users $HOME\Documents folder.
 # It then points the $Profile.CurrentUserAllHosts to the profile script in $HOME\Documents
-# 
+#
 
 # Copy profile script to a 'central' user location
 Write-Host "Copying profile script from repo to $HOME"
@@ -12,8 +12,9 @@ Write-Host "Creating redirecting profile scripts"
 Set-Content $PROFILE.CurrentUserAllHosts ". `"$HOME\Documents\PsProfileConfig.ps1`""
 
 # Copy custom themes from repo to oh-my-posh themes path
+$env:POSH_THEMES_PATH = resolve-path "~\AppData\Local\Programs\oh-my-posh\themes" # Kludge to fix User path with an opening bracket but no close bracket
 if (-not $env:POSH_THEMES_PATH) {
-    Write-Error "POSH_THEMES_PATH is not set — is oh-my-posh installed?"
+    Write-Error "POSH_THEMES_PATH is not set — is oh-my-posh installed?" -ErrorAction Stop
 } else {
     Copy-Item -Path "$PSScriptRoot\CustomThemes" -Destination "$env:POSH_THEMES_PATH" -Recurse -Force
 }
