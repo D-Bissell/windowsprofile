@@ -28,8 +28,7 @@ function Import-ModuleWithCheck {
 
     try {
         if (Get-Module -ListAvailable -Name $ModuleName) {
-            Import-Module $ModuleName
-            Write-Host "Module '$ModuleName' imported successfully."
+            Import-Module $ModuleName -ErrorAction Stop
         } else {
             Write-Error "Module '$ModuleName' not found. Please install it first."
         }
@@ -40,13 +39,12 @@ function Import-ModuleWithCheck {
 
 function Initialize-OhMyPosh {
     try {
-        oh-my-posh init pwsh | Invoke-Expression
         $ThemePath = "$env:POSH_THEMES_PATH\CustomThemes\$ThemeName.omp.yaml"
         if (Test-Path $ThemePath) {
             oh-my-posh init pwsh --config $ThemePath | Invoke-Expression
-            Write-Host "Oh-My-Posh initialized with custom theme $ThemePath."
         } else {
-            Write-Error "Oh-My-Posh theme not found at '$ThemePath'"
+            Write-Warning "Oh-My-Posh theme not found at '$ThemePath', using default."
+            oh-my-posh init pwsh | Invoke-Expression
         }
     } catch {
         Write-Error "An error occurred while initializing Oh-My-Posh: $_"
@@ -60,9 +58,8 @@ try {
 
     Initialize-OhMyPosh
 
-    $env:POSH_GIT_ENABLED = $false
-    $env:POSH_AZURE_ENABLED = $true
-    Write-Host "PowerShell profile configuration completed."
+    $env:POSH_GIT_ENABLED = "false"
+    $env:POSH_AZURE_ENABLED = "true"
 } catch {
     Write-Error "An error occurred during PowerShell profile configuration: $_"
 }

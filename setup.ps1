@@ -1,36 +1,56 @@
+#Requires -RunAsAdministrator
 # Run this script to setup windows profile
 
 # Install modules
 Write-Host "Installing oh-my-posh"
 winget install JanDeDobbeleer.OhMyPosh
 
-Set-PSRepository PSGallery -InstallationPolicy Trusted
+Set-PSResourceRepository -Name PSGallery -Trusted
 
 Write-Host "Installing posh-git"
-Install-module -Name posh-git -Scope CurrentUser
+Install-PSResource -Name posh-git -Scope AllUsers
 
 Write-Host "Installing Terminal-Icons"
-Install-Module -Name Terminal-Icons -Repository PSGallery -Scope CurrentUser
+Install-PSResource -Name Terminal-Icons -Scope AllUsers -Reinstall
 
 Write-Host "Installing PSReadLine"
-Install-Module -Name PSReadLine -Scope CurrentUser
+Install-PSResource -Name PSReadLine -Scope AllUsers
 
 # Install Nerd font
-Write-Host "Installing Nerd Font (Ignore the 302 error)"
 $FontName = 'CascadiaCode'
 $NerdFontsURI = 'https://github.com/ryanoasis/nerd-fonts/releases'
-Invoke-WebRequest -Uri "$NerdFontsURI/latest" -MaximumRedirection 0 -ErrorVariable err
-$LatestVersion = Split-Path -Path $err.InnerException.Response.Headers.Location -Leaf
-Invoke-WebRequest -Uri "$NerdFontsURI/download/$LatestVersion/$FontName.zip" -OutFile "$FontName.zip"
-Expand-Archive -Path "$FontName.zip"
-$ShellApplication = New-Object -ComObject shell.application
-$Fonts = $ShellApplication.NameSpace(0x14)
-Get-ChildItem -Path ".\$FontName" -Include '*.ttf' -Recurse | ForEach-Object -Process {
-    $Fonts.CopyHere($_.FullName)
+
+try {
+    Write-Host "Resolving latest Nerd Fonts release version"
+    $response = Invoke-WebRequest -Uri "$NerdFontsURI/latest" -MaximumRedirection 10
+    $LatestVersion = Split-Path -Path $response.BaseResponse.RequestMessage.RequestUri -Leaf
+
+    Write-Host "Downloading $FontName $LatestVersion"
+    Invoke-WebRequest -Uri "$NerdFontsURI/download/$LatestVersion/$FontName.zip" -OutFile "$PSScriptRoot\$FontName.zip"
+
+    Write-Host "Extracting font archive"
+    Expand-Archive -Path "$PSScriptRoot\$FontName.zip" -DestinationPath "$PSScriptRoot\$FontName"
+
+    Write-Host "Installing fonts"
+    $fontsDir = "$env:WINDIR\Fonts"
+    $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+    $installed = 0
+    $skipped = 0
+    Get-ChildItem -Path "$PSScriptRoot\$FontName" -Include '*.ttf' -Recurse | ForEach-Object {
+        if (Test-Path "$fontsDir\$($_.Name)") {
+            $skipped++
+        } else {
+            Copy-Item $_.FullName "$fontsDir\$($_.Name)" -Force
+            New-ItemProperty -Path $regPath -Name "$($_.BaseName) (TrueType)" -Value $_.Name -PropertyType String -Force | Out-Null
+            $installed++
+        }
+    }
+    Write-Host "Nerd Font installation complete ($installed installed, $skipped already present)."
+} catch {
+    Write-Error "Font installation failed: $_"
+} finally {
+    Write-Host "Removing temp font files"
+    Remove-Item -Path "$PSScriptRoot\$FontName*" -Confirm:$false -Recurse -ErrorAction SilentlyContinue
 }
 
-# Delete temp font files
-Write-Host "Removing Temp font files"
-Remove-item -Path "$FontName*" -Confirm:$false -Recurse
-
-. .\UpdateProfile.ps1
+. "$PSScriptRoot\UpdateProfile.ps1"
